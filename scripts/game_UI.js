@@ -201,8 +201,8 @@ export class TicTacToeUI {
         cell.replaceChildren(img);
 
         const isNotWinCell =
-          this.game.winSet &&
-          !this.game.winSet.some(([Y, X]) => Y === +y && X === +x);
+          this.game.winLine &&
+          !this.game.winLine.some(([Y, X]) => Y === +y && X === +x);
 
         isNotWinCell && img.classList.add("fadeOX");
       }

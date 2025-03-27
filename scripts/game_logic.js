@@ -31,7 +31,7 @@ export class TicTacToeLogic {
   board;
   gameState;
   score;
-  winSet;
+  winLine;
 
   constructor(savedGame) {
     savedGame ? this.setSavedGame(savedGame) : this.startNewGame();
@@ -42,7 +42,7 @@ export class TicTacToeLogic {
     this.board = structuredClone(savedGame.board);
     this.score = structuredClone(savedGame.score);
     this.gameState = savedGame.gameState;
-    this.winSet = savedGame.winSet;
+    this.winLine = savedGame.winLine;
   }
 
   startNewGame() {
@@ -50,7 +50,7 @@ export class TicTacToeLogic {
     this.board = structuredClone(initialBoard);
     this.gameState = gameState.IS_IN_PROCESS;
     this.score = this.score ? this.score : structuredClone(initialScore);
-    this.winSet = undefined;
+    this.winLine = undefined;
   }
 
   makeMove(y, x) {
@@ -60,11 +60,11 @@ export class TicTacToeLogic {
 
     this.board[y][x] = this.currentPlayer;
 
-    const winSet = this.#_checkWin();
-    if (winSet) {
+    const winLine = this.#_checkWin();
+    if (winLine) {
       this.score[this.currentPlayer] += 1;
       this.gameState = gameState.IS_WIN;
-      this.winSet = winSet;
+      this.winLine = winLine;
 
       return this.#_returnGame(true);
     }
@@ -140,21 +140,10 @@ export class TicTacToeLogic {
       }
     };
 
-    // check horizontal and vertical lines
-    const getHorizontal = (y) => new Array(3).fill().map((_, x) => [y, x]);
-    const getVertical = (x) => new Array(3).fill().map((_, y) => [y, x]);
-    for (let i = 0; i < 3; i++) {
-      const winCoords =
-        checkLine(getHorizontal(i)) || checkLine(getVertical(i));
-
+    for (let i = 0; i < winSet.length; i++) {
+      const winCoords = checkLine(winSet[i]);
       if (winCoords) return winCoords;
     }
-
-    // checkDiagonals
-    const getDiagonal1 = () => new Array(3).fill().map((_, i) => [i, i]);
-    const getDiagonal2 = () => new Array(3).fill().map((_, i) => [i, 2 - i]);
-    const winCoords = checkLine(getDiagonal1()) || checkLine(getDiagonal2());
-    if (winCoords) return winCoords;
 
     if (coordsToBlock) return coordsToBlock;
 
@@ -166,7 +155,7 @@ export class TicTacToeLogic {
 
   // for saving and sharing data ommiting methods
   get toSave() {
-    const { currentPlayer, board, gameState, score, winSet } = this;
-    return { currentPlayer, board, gameState, score, winSet };
+    const { currentPlayer, board, gameState, score, winLine } = this;
+    return { currentPlayer, board, gameState, score, winLine };
   }
 }
