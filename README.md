@@ -28,4 +28,8 @@ The project is built using the following Object-Oriented Programming (OOP) princ
 To run this project locally, you need to use a server since it relies on modules that are supported in server environments. You can set up a simple local server using Node.js, any other server software, or you can use the **Live Server** extension in **Visual Studio Code** for quick setup and automatic page reloads during development.
 
 
+![App Screenshot 1](./public/screenshot-1.png)
+![App Screenshot 2](./public/screenshot-2.png)
+
+
 
